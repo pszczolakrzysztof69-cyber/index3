@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista zakupów</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+</head>
+<body>
+
+    <h2>Lista zakupów</h2>
+
+    <input id="input" placeholder="Produkt...">
+    <button id="add">Dodaj produkt</button>
+    <button id="remove">Usuń ostatni</button>
+    <button id="add-first">Dodaj na początku</button>
+    <button id="add-last">Dodaj na końcu</button>
+    <button id="clear">Wyczyść</button>
+    <button id="restore">Przywróć</button>
+    <button id="color">Pokoloruj co drugi</button>
+    <button id="sort">Sortuj A–Z</button>
+
+    <br><br>
+
+    <input id="filter" placeholder="Filtruj...">
+    <button id="filter-btn">Filtruj</button>
+
+    <ul id="list">
+        <li class="item">Chleb</li>
+        <li class="item">Masło</li>
+        <li class="item">Mleko</li>
+    </ul>
+
+<script>
+$(function(){
+
+    $("#list").sortable(); // przeciąganie
+
+    function newItem(text){
+        return $("<li>").addClass("item").text(text);
+    }
+
+    $("#add").click(function(){
+        let v = $("#input").val().trim();
+        if(v) $("#list").append(newItem(v));
+        $("#input").val("");
+    });
+
+    $("#remove").click(function(){
+        $("#list li").last().remove();
+    });
+
+    $("#add-first").click(function(){
+        let v = $("#input").val().trim();
+        if(v) $("#list").prepend(newItem(v));
+        $("#input").val("");
+    });
+
+    $("#add-last").click(function(){
+        let v = $("#input").val().trim();
+        if(v) $("#list").append(newItem(v));
+        $("#input").val("");
+    });
+
+    $("#clear").click(function(){
+        $("#list").empty();
+    });
+
+    $("#restore").click(function(){
+        $("#list").html(`
+            <li class="item">Chleb</li>
+            <li class="item">Masło</li>
+            <li class="item">Mleko</li>
+        `);
+    });
+
+    $("#color").click(function(){
+        $("#list li").css("background", "");
+        $("#list li:even").css("background", "#d0f0ff");
+    });
+
+    $("#sort").click(function(){
+        let items = $("#list li").get();
+        items.sort((a,b)=>$(a).text().localeCompare($(b).text()));
+        $("#list").empty().append(items);
+    });
+
+    $("#filter-btn, #filter").on("keyup click", function(){
+        let f = $("#filter").val().toLowerCase();
+        $("#list li").each(function(){
+            $(this).toggle($(this).text().toLowerCase().includes(f));
+        });
+    });
+
+    // edycja po kliknięciu
+    $("#list").on("click", "li", function(){
+        $(this).toggleClass("active");
+    });
+
+    $("#list").on("dblclick", "li", function(){
+        let li = $(this);
+        let old = li.text();
+        let input = $("<input>").val(old);
+
+        li.fadeOut(100, function(){
+            li.html(input).fadeIn(100);
+            input.focus();
+        });
+
+        input.keydown(function(e){
+            if(e.key === "Enter"){
+                let val = input.val().trim() || old;
+                li.fadeOut(100, function(){
+                    li.text(val).fadeIn(100);
+                });
+            }
+        });
+    });
+
+});
+</script>
+
+<style>
+    .item { cursor: move; padding: 4px; border: 1px solid #ccc; margin: 3px; }
+    .active { background: yellow; }
+</style>
+
+</body>
+</html>

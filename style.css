@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input, button {
+    padding: 6px 10px;
+    margin: 3px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+#list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#list li {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    cursor: move;
+}
+
+.active {
+    background: #ffe066 !important;
+}
+
+#filter {
+    margin-top: 10px;
+}
